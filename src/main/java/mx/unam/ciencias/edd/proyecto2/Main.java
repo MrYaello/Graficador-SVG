@@ -2,10 +2,6 @@ package mx.unam.ciencias.edd.Proyecto2;
 
 import mx.unam.ciencias.edd.*;
 
-/**
-  * Clase que realiza la actividad principal del proyecto. Ordenar la lista de cadenas,
-  * normalizar las cadenas y formatear la lista.
-  */
 public class Main {
 
   public Structure structure;
@@ -123,11 +119,9 @@ public class Main {
   }
 
   private void setElements(Lista<String> lista) {
-    while (!lista.esVacia()) {
-      String s = lista.eliminaPrimero().replaceAll("[^0-9]", "_");
-      for (String e : s.split("_"))
+    while (!lista.esVacia())
+      for (String e : lista.eliminaPrimero().split("[^0-9]"))
         if (e.length() > 0 && Character.isDigit(e.charAt(0))) elements.mete(Integer.parseInt(e));  
-    }
   }
   
 }
