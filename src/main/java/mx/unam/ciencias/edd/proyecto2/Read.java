@@ -1,4 +1,4 @@
-package mx.unam.ciencias.edd.Proyecto2;
+package mx.unam.ciencias.edd.proyecto2;
 
 import mx.unam.ciencias.edd.Lista;
 import java.io.BufferedReader;
@@ -62,7 +62,7 @@ public class Read {
       reader = new BufferedReader(in);
       while ((cLine = reader.readLine()) != null) {
         if (cLine.trim().startsWith("#")) continue;
-        cLine =  cLine.substring(0, cLine.indexOf("#") == -1 ? cLine.length() : cLine.indexOf("#")).trim();
+        cLine =  cLine.substring(0, !cLine.contains("#") ? cLine.length() : cLine.indexOf("#")).trim();
         lista.agrega(cLine);
       }
     } catch (IOException e) {
