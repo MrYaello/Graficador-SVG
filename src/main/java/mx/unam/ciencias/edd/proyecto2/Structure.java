@@ -1,4 +1,4 @@
-package mx.unam.ciencias.edd.Proyecto2;
+package mx.unam.ciencias.edd.proyecto2;
 
 public enum Structure {
   COLA,

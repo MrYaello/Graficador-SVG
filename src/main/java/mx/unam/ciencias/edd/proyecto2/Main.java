@@ -1,6 +1,8 @@
-package mx.unam.ciencias.edd.Proyecto2;
+package mx.unam.ciencias.edd.proyecto2;
 
 import mx.unam.ciencias.edd.*;
+import mx.unam.ciencias.edd.proyecto2.*;
+import mx.unam.ciencias.edd.proyecto2.graphers.*;
 
 public class Main {
 
@@ -12,6 +14,9 @@ public class Main {
   
   public void start(String[] args) {
     Read read = new Read();
+    GrapherSVG g = new GrapherSVG();
+    String svg = g.initSVG(250, 60) + g.declareArrows() +
+    g.drawArrows(0,0) + g.drawArrows(50, 0) + g.drawArrows(100, 0) + g.closeSVG();
     if (args.length == 0) read.read(read.standardInput());
     else read.read(read.file(args[0]));
     System.out.println(read.getLista());
@@ -22,6 +27,7 @@ public class Main {
     System.out.println(build);
     System.out.println(build2);
     System.out.println(build3);
+    System.out.println(svg);
   }
 
   private void makeStructure(Lista<String> lista) {
@@ -30,35 +36,35 @@ public class Main {
 
     switch (structure) {
       case TRN:
-        build = new ArbolRojinegro<Integer>(); 
+        build = new ArbolRojinegro<>();
         break;
 
       case LISTA:
-        build = new Lista<Integer>(); 
+        build = new Lista<>();
         break;
 
       case TAVL:
-        build = new ArbolAVL<Integer>(); 
+        build = new ArbolAVL<>();
         break;
 
       case TBC:
-        build = new ArbolBinarioCompleto<Integer>(); 
+        build = new ArbolBinarioCompleto<>();
         break;
 
       case TBO:
-        build = new ArbolBinarioOrdenado<Integer>();
+        build = new ArbolBinarioOrdenado<>();
         break;
 
       case GRAP:
-        build3 = new Grafica<Integer>();
+        build3 = new Grafica<>();
         break;
 
       case COLA:
-        build2 = new Cola<Integer>();
+        build2 = new Cola<>();
         break;
 
       case PILA:
-        build2 = new Pila<Integer>();
+        build2 = new Pila<>();
         break;
     }
 
@@ -73,7 +79,7 @@ public class Main {
           System.err.println("Para crear una gráfica se requiere un número par de elementos.");
           System.exit(1);
         }
-        if (a == b) build3.agrega(a);
+        if (a.equals(b)) build3.agrega(a);
         else if (build3.contiene(a) && !build3.contiene(b)) {
           build3.agrega(b);
           build3.conecta(a,b);
@@ -95,26 +101,35 @@ public class Main {
   }
 
   private void setStructure(Lista<String> lista) {
-    String s = lista.getPrimero().toLowerCase().split(" ")[0]; 
-    if (s.equals("arbolrojinegro"))
-      structure = Structure.TRN;
-    else if (s.equals("cola"))
-      structure = Structure.COLA;
-    else if (s.equals("pila"))
-      structure = Structure.PILA;
-    else if (s.equals("lista"))
-      structure = Structure.LISTA;
-    else if (s.equals("arbolavl"))
-      structure = Structure.TAVL;
-    else if (s.equals("arbolbinariocompleto"))
-      structure = Structure.TBC;
-    else if (s.equals("arbolbinarioordenado"))
-      structure = Structure.TBO;
-    else if (s.equals("grafica"))
-      structure = Structure.GRAP;
-    else { 
-      System.err.println("La estructura de datos \"" + s + "\" no es válida.");
-      System.exit(1);
+    String s = lista.getPrimero().toLowerCase().split(" ")[0];
+    switch (s) {
+      case "arbolrojinegro":
+        structure = Structure.TRN;
+        break;
+      case "cola":
+        structure = Structure.COLA;
+        break;
+      case "pila":
+        structure = Structure.PILA;
+        break;
+      case "lista":
+        structure = Structure.LISTA;
+        break;
+      case "arbolavl":
+        structure = Structure.TAVL;
+        break;
+      case "arbolbinariocompleto":
+        structure = Structure.TBC;
+        break;
+      case "arbolbinarioordenado":
+        structure = Structure.TBO;
+        break;
+      case "grafica":
+        structure = Structure.GRAP;
+        break;
+      default:
+        System.err.println("La estructura de datos \"" + s + "\" no es válida.");
+        System.exit(1);
     }
   }
 
