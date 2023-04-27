@@ -6,27 +6,18 @@ import mx.unam.ciencias.edd.proyecto2.graphers.*;
 
 public class Main {
 
-  public Structure structure;
+  public GrapherStructure gs = new GrapherStructure();
   public Cola<Integer> elements = new Cola<>();
-  public Coleccion<Integer> build;
-  public MeteSaca<Integer> build2;
-  public Grafica<Integer> build3; 
-  
+
   public void start(String[] args) {
     Read read = new Read();
-    GrapherSVG g = new GrapherSVG();
-    String svg = g.initSVG(250, 60) + g.declareArrows() +
-    g.drawArrows(0,0) + g.drawArrows(50, 0) + g.drawArrows(100, 0) + g.closeSVG();
+    GrapherStructure g = new GrapherStructure();
+
     if (args.length == 0) read.read(read.standardInput());
     else read.read(read.file(args[0]));
-    System.out.println(read.getLista());
     makeStructure(read.getLista());
-    System.out.println(read.getLista());
-    System.out.println(structure);
-    System.out.println(elements);
-    System.out.println(build);
-    System.out.println(build2);
-    System.out.println(build3);
+    String svg = gs.doGraph();
+
     System.out.println(svg);
   }
 
@@ -34,41 +25,41 @@ public class Main {
     setStructure(lista);
     setElements(lista);
 
-    switch (structure) {
+    switch (gs.structure) {
       case TRN:
-        build = new ArbolRojinegro<>();
+        gs.build = new ArbolRojinegro<>();
         break;
 
       case LISTA:
-        build = new Lista<>();
+        gs.build = new Lista<>();
         break;
 
       case TAVL:
-        build = new ArbolAVL<>();
+        gs.build = new ArbolAVL<>();
         break;
 
       case TBC:
-        build = new ArbolBinarioCompleto<>();
+        gs.build = new ArbolBinarioCompleto<>();
         break;
 
       case TBO:
-        build = new ArbolBinarioOrdenado<>();
+        gs.build = new ArbolBinarioOrdenado<>();
         break;
 
       case GRAP:
-        build3 = new Grafica<>();
+        gs.build3 = new Grafica<>();
         break;
 
       case COLA:
-        build2 = new Cola<>();
+        gs.build2 = new Cola<>();
         break;
 
       case PILA:
-        build2 = new Pila<>();
+        gs.build2 = new Pila<>();
         break;
     }
 
-    if (build3 != null) {
+    if (gs.build3 != null) {
       while (!elements.esVacia()) {
         Integer a = null;
         Integer b = null;
@@ -79,24 +70,24 @@ public class Main {
           System.err.println("Para crear una gráfica se requiere un número par de elementos.");
           System.exit(1);
         }
-        if (a.equals(b)) build3.agrega(a);
-        else if (build3.contiene(a) && !build3.contiene(b)) {
-          build3.agrega(b);
-          build3.conecta(a,b);
-        } else if (!build3.contiene(a) && build3.contiene(b)) {
-          build3.agrega(a);
-          build3.conecta(a,b);
-        } else if (!build3.contiene(a) && !build3.contiene(b)) {
-          build3.agrega(a);
-          build3.agrega(b);
-          build3.conecta(a,b);
-        } else if (build3.contiene(a) && build3.contiene(b) && !build3.sonVecinos(a,b)) build3.conecta(a,b);
+        if (a.equals(b)) gs.build3.agrega(a);
+        else if (gs.build3.contiene(a) && !gs.build3.contiene(b)) {
+          gs.build3.agrega(b);
+          gs.build3.conecta(a,b);
+        } else if (!gs.build3.contiene(a) && gs.build3.contiene(b)) {
+          gs.build3.agrega(a);
+          gs.build3.conecta(a,b);
+        } else if (!gs.build3.contiene(a) && !gs.build3.contiene(b)) {
+          gs.build3.agrega(a);
+          gs.build3.agrega(b);
+          gs.build3.conecta(a,b);
+        } else if (gs.build3.contiene(a) && gs.build3.contiene(b) && !gs.build3.sonVecinos(a,b)) gs.build3.conecta(a,b);
       } 
       
     }
     while (!elements.esVacia()) {
-      if (build != null) build.agrega(elements.saca());
-      else build2.mete(elements.saca());
+      if (gs.build != null) gs.build.agrega(elements.saca());
+      else gs.build2.mete(elements.saca());
     }
   }
 
@@ -104,28 +95,28 @@ public class Main {
     String s = lista.getPrimero().toLowerCase().split(" ")[0];
     switch (s) {
       case "arbolrojinegro":
-        structure = Structure.TRN;
+        gs.structure = Structure.TRN;
         break;
       case "cola":
-        structure = Structure.COLA;
+        gs.structure = Structure.COLA;
         break;
       case "pila":
-        structure = Structure.PILA;
+        gs.structure = Structure.PILA;
         break;
       case "lista":
-        structure = Structure.LISTA;
+        gs.structure = Structure.LISTA;
         break;
       case "arbolavl":
-        structure = Structure.TAVL;
+        gs.structure = Structure.TAVL;
         break;
       case "arbolbinariocompleto":
-        structure = Structure.TBC;
+        gs.structure = Structure.TBC;
         break;
       case "arbolbinarioordenado":
-        structure = Structure.TBO;
+        gs.structure = Structure.TBO;
         break;
       case "grafica":
-        structure = Structure.GRAP;
+        gs.structure = Structure.GRAP;
         break;
       default:
         System.err.println("La estructura de datos \"" + s + "\" no es válida.");
