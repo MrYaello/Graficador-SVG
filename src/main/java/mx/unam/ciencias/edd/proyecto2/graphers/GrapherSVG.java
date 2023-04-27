@@ -60,15 +60,6 @@ public class GrapherSVG {
             "\t\t</symbol>" + "\n";
   }
 
-  /*public String declareArrows() {
-    return "\t\t<symbol id='arrows' width='40' height='50' viewBox='0 0'>" + "\n" +
-            "\t" + drawTriangle(0, 25, 12, 20, "black") +
-            "\t" + drawRect(12, 32, 12, 6, "", "black") +
-            "\t" + drawTriangle(40, 15, -12, 20, "black") +
-            "\t" + drawRect(16, 23, 12, 6, "", "black") +
-            "\t\t</symbol>" + "\n";
-  }*/
-
   public String drawArrow(int x, int y) {
     return String.format("\t\t<use xlink:href='#arrow' x='%d' y='%d'/>" + "\n", x, y);
   }
