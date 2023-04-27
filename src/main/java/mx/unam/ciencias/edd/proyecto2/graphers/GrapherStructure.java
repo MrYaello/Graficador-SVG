@@ -14,9 +14,9 @@ public class GrapherStructure extends GrapherSVG {
     private int WIDTH;
     private int HEIGHT;
     private int ELEMENT_WIDTH;
+    private int ELEMENT_HEIGHT;
     private int RADIUS;
     private final int MIN_ELEMENT_WIDTH;
-    private final int ELEMENT_HEIGHT;
     private final int MARGIN;
     private final int PADDING;
     private final int FONT_SIZE;
