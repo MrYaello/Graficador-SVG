@@ -59,7 +59,7 @@ public class Main {
         break;
     }
 
-    if (gs.build3 != null) {
+    if (gs.structure == Structure.GRAP) {
       while (!elements.esVacia()) {
         Integer a = null;
         Integer b = null;
@@ -83,8 +83,8 @@ public class Main {
           gs.build3.conecta(a,b);
         } else if (gs.build3.contiene(a) && gs.build3.contiene(b) && !gs.build3.sonVecinos(a,b)) gs.build3.conecta(a,b);
       } 
-      
     }
+
     while (!elements.esVacia()) {
       if (gs.build != null) gs.build.agrega(elements.saca());
       else gs.build2.mete(elements.saca());
@@ -129,5 +129,5 @@ public class Main {
       for (String e : lista.eliminaPrimero().split("[^0-9]"))
         if (e.length() > 0 && Character.isDigit(e.charAt(0))) elements.mete(Integer.parseInt(e));  
   }
-  
+
 }
