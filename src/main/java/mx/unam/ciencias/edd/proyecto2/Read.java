@@ -35,7 +35,8 @@ public class Read {
     try {
       return new FileReader(path);
     } catch (FileNotFoundException e) {
-      System.out.println("El archivo " + path + " no existe.");
+      System.err.println("El archivo " + path + " no existe.");
+      System.exit(1);
     }
     return null;
   } 
