@@ -10,6 +10,7 @@ public class GrapherStructure extends GrapherSVG {
   public Coleccion<Integer> build;
   public MeteSaca<Integer> build2;
   public Grafica<Integer> build3;
+  public ArbolBinario<Integer> build4;
   public String svg = "";
 
   private int WIDTH;
@@ -108,6 +109,7 @@ public class GrapherStructure extends GrapherSVG {
       s += drawEmpty();
       WIDTH = 2 * MARGIN + 40;
       HEIGHT = 2 * MARGIN + 40;
+      return s;
     }
     for (int i = 1; i < elements.length; i++) {
       HEIGHT += PADDING;
@@ -121,22 +123,57 @@ public class GrapherStructure extends GrapherSVG {
     return graphLineal();
   }
 
-  public String graphArbol() {
-    String s = build.toString() + "\n";
-    Iterator<Integer> iterator = build.iterator();
-    while(iterator.hasNext()) {
-      s += iterator.next() + " ";
+  public String graphArbol() { 
+    String s = "";
+    if (build4.esVacio()) {
+      s += drawEmpty();
+      WIDTH = 2 * MARGIN + 40;
+      HEIGHT = 2 * MARGIN + 40;
+      return s;
     }
+    int depth = build4.altura() == 0 ? 1 : build4.altura();
+    RADIUS = calcElementWidth(max(toStringArr(build4.iterator(), build4.getElementos()))) / 2;
+    HEIGHT = MARGIN + depth * 100; 
+    WIDTH = 2 * MARGIN + breadth(build4.raiz(), 1) * 2 * RADIUS;
+    s += drawLines(build4.raiz(), (WIDTH / 2) / 2, WIDTH / 2, 50);
+    s += drawVertexs(build4.raiz(), (WIDTH / 2) / 2, WIDTH / 2, 50, RADIUS);
     return s;
   }
 
-  public String graphGraph() {
+  private String drawVertexs(VerticeArbolBinario v, double dec, double coord, y, double rad) {
     String s = "";
+    if (v != null) {
+      String balance = getAVL(v.toString());
+
+    }
+  }
+
+  private String drawVertex(int x, int y, int rad, String text, String color, boolean isAvl, String balance) {
+
+  }
+
+  private String getAVL(String s) {
+    String balance = null;
+    if (structure == Structure.TAVL) balance = s.split(" ")[1];
+    return balance;
+  }
+
+  public String graphGraph() {
+    String s = build3.toString();
     return s;
   }
 
   private int calcElementWidth(String value) {
     return (value.length() * 14) + (2 * PADDING) > 40 ? (value.length() * 14) + (2 * PADDING) : MIN_ELEMENT_WIDTH;
+  }
+
+  private String[] toStringArr(Iterator<Integer> iterator, int el) {
+    String[] arr = new String[el];
+    int i = 0;
+    while (iterator.hasNext()) {
+      arr[i++] = iterator.next().toString();
+    }
+    return arr;
   }
 
   private String max(String[] arr) {
@@ -149,5 +186,10 @@ public class GrapherStructure extends GrapherSVG {
       }
     }
     return arr[pos];
+  }
+
+  private int breadth(VerticeArbolBinario<Integer> v, int n) {
+    if (!v.hayDerecho()) return n;
+    return breadth(v.derecho(), n + 1);
   }
 }

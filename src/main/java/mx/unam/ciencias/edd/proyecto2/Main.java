@@ -7,7 +7,7 @@ import mx.unam.ciencias.edd.proyecto2.graphers.*;
 public class Main {
 
   public GrapherStructure gs = new GrapherStructure();
-  public Cola<Integer> elements = new Cola<>();
+  public Lista<Integer> elements = new Lista<>();
 
   public void start(String[] args) {
     Read read = new Read();
@@ -27,23 +27,23 @@ public class Main {
 
     switch (gs.structure) {
       case TRN:
-        gs.build = new ArbolRojinegro<>();
+        gs.build4 = new ArbolRojinegro<>(elements);
         break;
 
       case LISTA:
-        gs.build = new Lista<>();
+        gs.build = elements;
         break;
 
       case TAVL:
-        gs.build = new ArbolAVL<>();
+        gs.build4 = new ArbolAVL<>(elements);
         break;
 
       case TBC:
-        gs.build = new ArbolBinarioCompleto<>();
+        gs.build4 = new ArbolBinarioCompleto<>(elements);
         break;
 
       case TBO:
-        gs.build = new ArbolBinarioOrdenado<>();
+        gs.build4 = new ArbolBinarioOrdenado<>(elements);
         break;
 
       case GRAP:
@@ -52,10 +52,12 @@ public class Main {
 
       case COLA:
         gs.build2 = new Cola<>();
+        while (!elements.esVacia()) gs.build2.mete(elements.eliminaPrimero());
         break;
 
       case PILA:
         gs.build2 = new Pila<>();
+        while (!elements.esVacia()) gs.build2.mete(elements.eliminaPrimero());
         break;
     }
 
@@ -64,8 +66,8 @@ public class Main {
         Integer a = null;
         Integer b = null;
         try {
-          a = elements.saca();
-          b = elements.saca();
+          a = elements.eliminaPrimero();
+          b = elements.eliminaPrimero();
         } catch (Exception e) {
           System.err.println("Para crear una gráfica se requiere un número par de elementos.");
           System.exit(1);
@@ -81,14 +83,10 @@ public class Main {
           gs.build3.agrega(a);
           gs.build3.agrega(b);
           gs.build3.conecta(a,b);
-        } else if (gs.build3.contiene(a) && gs.build3.contiene(b) && !gs.build3.sonVecinos(a,b)) gs.build3.conecta(a,b);
+        } else if (gs.build3.contiene(a) && gs.build3.contiene(b) && !gs.build3.sonVecinos(a,b)) 
+          gs.build3.conecta(a,b);
       } 
-    }
-
-    while (!elements.esVacia()) {
-      if (gs.build != null) gs.build.agrega(elements.saca());
-      else gs.build2.mete(elements.saca());
-    }
+    }  
   }
 
   private void setStructure(Lista<String> lista) {
@@ -127,7 +125,7 @@ public class Main {
   private void setElements(Lista<String> lista) {
     while (!lista.esVacia())
       for (String e : lista.eliminaPrimero().split("[^0-9]"))
-        if (e.length() > 0 && Character.isDigit(e.charAt(0))) elements.mete(Integer.parseInt(e));  
+        if (e.length() > 0 && Character.isDigit(e.charAt(0))) elements.agrega(Integer.parseInt(e));  
   }
 
 }
