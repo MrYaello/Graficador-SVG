@@ -195,7 +195,7 @@ public class GrapherStructure extends GrapherSVG {
       coords.agrega(getCoords(build3.getElementos(), i, e.toString()));
       double x = Double.parseDouble(coords.getUltimo().split(" ")[1].split(",")[0]);
       double y = Double.parseDouble(coords.getUltimo().split(" ")[1].split(",")[1]);
-      v += drawCircleText(x, y, RADIUS, "Black", "White", 20, "Black", e.toString());
+      v += drawCircleText((int) x, (int) y, RADIUS, "Black", "White", 20, "Black", e.toString());
       i++;
     }
 
@@ -218,7 +218,8 @@ public class GrapherStructure extends GrapherSVG {
           y2 = Double.parseDouble(c.split(" ")[1].split(",")[1]);
         }
       }
-      l += drawLine(x1, y1, x2, y2, "Black");
+      if (x1 != -1 && x2 != -1 && y1 != -1 && y2 != -1)
+        l += drawLine((int) x1, (int) y1, (int) x2, (int) y2, "Black");
     }
     return l + v;
   }
