@@ -122,7 +122,7 @@ public class GrapherStructure extends GrapherSVG {
     return graphLineal();
   }
 
-  public String graphArbol() { 
+  public String graphArbol() {
     String s = "";
     if (build4.esVacia()) {
       s += drawEmpty();
@@ -135,24 +135,24 @@ public class GrapherStructure extends GrapherSVG {
     HEIGHT = 2 * MARGIN + 2 * (depth + 1) * RADIUS;
     WIDTH = 2 * MARGIN + (breadth(build4.raiz()) + 2) * RADIUS * 2;
     s += drawLines(build4.raiz(), (WIDTH / 2) / 2, WIDTH / 2, RADIUS + 10);
-    s += drawVertexs(build4.raiz(), (WIDTH / 2) / 2, WIDTH / 2, RADIUS + 10, RADIUS, true);
+    s += drawVertexes(build4.raiz(), (WIDTH / 2) / 2, WIDTH / 2, RADIUS + 10, RADIUS, true);
     WIDTH += 2 * MARGIN;
     return s;
   }
 
-  private String drawVertexs(VerticeArbolBinario v, int dec, int x, int y, int r, boolean isRight) {
+  private String drawVertexes(VerticeArbolBinario v, int dec, int x, int y, int r, boolean isRight) {
     String s = "";
     if (v != null) {
       s += drawVertex(x, y, r, "black", getColor(v.toString()),
               FONT_SIZE, getColor(v.toString()).equals("White") ? "Black" : "White",
               v.get().toString(), getAVL(v.toString()) + (isRight ? " R" : " L"));
       if (v.hayIzquierdo() && v.hayDerecho())
-        s += drawVertexs(v.izquierdo(), dec / 2, x - dec, y + 2 * r, r, false) +
-                drawVertexs(v.derecho(), dec / 2, x + dec, y + 2 * r, r, true);
+        s += drawVertexes(v.izquierdo(), dec / 2, x - dec, y + 2 * r, r, false) +
+                drawVertexes(v.derecho(), dec / 2, x + dec, y + 2 * r, r, true);
       if (v.hayIzquierdo() && !v.hayDerecho())
-        s += drawVertexs(v.izquierdo(), dec / 2, x - dec, y + 2 * r, r, false);
+        s += drawVertexes(v.izquierdo(), dec / 2, x - dec, y + 2 * r, r, false);
       if (!v.hayIzquierdo() && v.hayDerecho())
-        s += drawVertexs(v.derecho(), dec / 2, x + dec, y + 2 * r, r, true);
+        s += drawVertexes(v.derecho(), dec / 2, x + dec, y + 2 * r, r, true);
     }
     return s;
   }
@@ -186,8 +186,53 @@ public class GrapherStructure extends GrapherSVG {
   }
 
   public String graphGraph() {
-    String s = build3.toString();
-    return s;
+    String v = "", l = "";
+    RADIUS = calcElementWidth(max(toStringArr(build3.iterator(), build3.getElementos()))) / 2;
+    WIDTH = HEIGHT = build3.getElementos() * (RADIUS + 10) * 2;
+    Lista<String> coords = new Lista<>();
+    int i = 1;
+    for (Integer e : build3) {
+      coords.agrega(getCoords(build3.getElementos(), i, e.toString()));
+      double x = Double.parseDouble(coords.getUltimo().split(" ")[1].split(",")[0]);
+      double y = Double.parseDouble(coords.getUltimo().split(" ")[1].split(",")[1]);
+      v += drawCircleText(x, y, RADIUS, "Black", "White", 20, "Black", e.toString());
+      i++;
+    }
+
+    String a = build3.toString().substring(build3.toString().indexOf(" {") + 2, build3.toString().lastIndexOf(", }"));
+    String[] aristas = a.replace("(", "_").replace(")", "_").split("_, _");
+    for (String e : aristas) {
+      double x1 = -1;
+      double x2 = -1;
+      double y1 = -1;
+      double y2 = -1;
+
+      e = e.replace("_", "");
+      for (String c : coords) {
+        System.out.println(c);
+        System.out.println(e.split(", ")[0].equals(c.split(" ")[0]));
+        if (e.split(", ")[0].equals(c.split(" ")[0])) {
+          x1 = Double.parseDouble(c.split(" ")[1].split(",")[0]);
+          y1 = Double.parseDouble(c.split(" ")[1].split(",")[1]);
+        }
+        System.out.println(e.split(", ")[1].equals(c.split(" ")[0]));
+        if (e.split(", ")[1].equals(c.split(" ")[0])) {
+          x2 = Double.parseDouble(c.split(" ")[1].split(",")[0]);
+          y2 = Double.parseDouble(c.split(" ")[1].split(",")[1]);
+        }
+      }
+      l += drawLine(x1, y1, x2, y2, "Black");
+    }
+    return l + v;
+  }
+
+  private String getCoords(int n, int i, String e) {
+    double a = n * (RADIUS + 10);
+    double b = n * (RADIUS);
+    double k = (double) i/n;
+    double x = a + b * Math.sin(k * 2 * Math.PI);
+    double y = a + b * Math.cos(k * 2 * Math.PI);
+    return e + " " + x + "," + y;
   }
 
   private int calcElementWidth(String value) {

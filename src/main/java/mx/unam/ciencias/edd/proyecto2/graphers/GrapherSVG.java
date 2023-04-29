@@ -13,8 +13,8 @@ public class GrapherSVG {
     return "\t</g>\n</svg>";
   }
 
-  public String drawLine(int x1, int y1, int x2, int y2, String color) {
-    return String.format("\t\t<line x1='%d' y1='%d' x2='%d' y2='%d'" +
+  public String drawLine(double x1, double y1, double x2, double y2, String color) {
+    return String.format("\t\t<line x1='%,.4f' y1='%,.4f' x2='%,.4f' y2='%,.4f'" +
         " stroke='%s' stroke-width='3'/>" + "\n", x1, y1, x2, y2, color);
   }
 
@@ -27,24 +27,25 @@ public class GrapherSVG {
     return drawRect(x, y, w, h, stroke, fill) + drawText(w / 2 + x, h / 2 + y, size, color, text);
   }
 
-  public String drawCircle(int x, int y, int r, String stroke, String fill) {
-    return String.format("\t\t<circle cx='%d' cy='%d' r='%d' stroke='%s' stroke-width='3' fill='%s'/>" + "\n",
+  public String drawCircle(double x, double y, int r, String stroke, String fill) {
+    return String.format("\t\t<circle cx='%,.4f' cy='%,.4f' r='%d' stroke='%s' stroke-width='3' fill='%s'/>" + "\n",
         x, y, r, stroke, fill);
   }
 
-  public String drawCircleText(int x, int y, int r, String stroke, String fill, int size, String color, String text) {
+  public String drawCircleText(double x, double y, int r, String stroke, String fill, int size, String color, String text) {
     return drawCircle(x, y, r, stroke, fill) + drawText(x, y, size, color, text);
   }
 
-  public String drawVertex(int x, int y, int r, String stroke, String fill, int size, String color, String text, String balance) {
+  public String drawVertex(double x, double y, int r, String stroke, String fill, int size, String color, String text, String balance) {
     if (balance.split(" ")[0].equals("null"))
       return drawCircleText(x, y, r, stroke, fill, size,  color, text);
     return drawCircleText(x, y, r, stroke, fill, size,  color, text) +
-            drawText(x + (balance.split(" ")[1].equals("R")  ? r + 10 : -r - 10), y - (r/4 + r/2), size - 5, "black", balance.split(" ")[0]);
+            drawText(x + (balance.split(" ")[1].equals("R")  ? r + 10 : -r - 10), y - (r/4 + r/2),
+                    size - 5, "black", balance.split(" ")[0]);
   }
 
-  public String drawText(int x, int y, int size, String color, String text) {
-    return String.format("\t\t<text x='%d' y='%d' text-anchor='middle'" +
+  public String drawText(double x, double y, int size, String color, String text) {
+    return String.format("\t\t<text x='%,.4f' y='%,.4f' text-anchor='middle'" +
         " font-family='sans-serif' font-size='%d' fill='%s'>%s</text>" + "\n", x, y + 5, size, color, text);
   }
 
