@@ -36,6 +36,13 @@ public class GrapherSVG {
     return drawCircle(x, y, r, stroke, fill) + drawText(x, y, size, color, text);
   }
 
+  public String drawVertex(int x, int y, int r, String stroke, String fill, int size, String color, String text, String balance) {
+    if (balance.split(" ")[0].equals("null"))
+      return drawCircleText(x, y, r, stroke, fill, size,  color, text);
+    return drawCircleText(x, y, r, stroke, fill, size,  color, text) +
+            drawText(x + (balance.split(" ")[1].equals("R")  ? r + 10 : -r - 10), y - (r/4 + r/2), size - 5, "black", balance.split(" ")[0]);
+  }
+
   public String drawText(int x, int y, int size, String color, String text) {
     return String.format("\t\t<text x='%d' y='%d' text-anchor='middle'" +
         " font-family='sans-serif' font-size='%d' fill='%s'>%s</text>" + "\n", x, y + 5, size, color, text);

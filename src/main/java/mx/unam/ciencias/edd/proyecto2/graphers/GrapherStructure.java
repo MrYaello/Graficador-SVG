@@ -12,7 +12,6 @@ public class GrapherStructure extends GrapherSVG {
   public Grafica<Integer> build3;
   public ArbolBinario<Integer> build4;
   public String svg = "";
-
   private int WIDTH;
   private int HEIGHT;
   private int ELEMENT_WIDTH;
@@ -125,7 +124,7 @@ public class GrapherStructure extends GrapherSVG {
 
   public String graphArbol() { 
     String s = "";
-    if (build4.esVacio()) {
+    if (build4.esVacia()) {
       s += drawEmpty();
       WIDTH = 2 * MARGIN + 40;
       HEIGHT = 2 * MARGIN + 40;
@@ -133,29 +132,57 @@ public class GrapherStructure extends GrapherSVG {
     }
     int depth = build4.altura() == 0 ? 1 : build4.altura();
     RADIUS = calcElementWidth(max(toStringArr(build4.iterator(), build4.getElementos()))) / 2;
-    HEIGHT = MARGIN + depth * 100; 
-    WIDTH = 2 * MARGIN + breadth(build4.raiz(), 1) * 2 * RADIUS;
-    s += drawLines(build4.raiz(), (WIDTH / 2) / 2, WIDTH / 2, 50);
-    s += drawVertexs(build4.raiz(), (WIDTH / 2) / 2, WIDTH / 2, 50, RADIUS);
+    HEIGHT = 2 * MARGIN + 2 * (depth + 1) * RADIUS;
+    WIDTH = 2 * MARGIN + (breadth(build4.raiz()) + 2) * RADIUS * 2;
+    s += drawLines(build4.raiz(), (WIDTH / 2) / 2, WIDTH / 2, RADIUS + 10);
+    s += drawVertexs(build4.raiz(), (WIDTH / 2) / 2, WIDTH / 2, RADIUS + 10, RADIUS, true);
+    WIDTH += 2 * MARGIN;
     return s;
   }
 
-  private String drawVertexs(VerticeArbolBinario v, double dec, double coord, y, double rad) {
+  private String drawVertexs(VerticeArbolBinario v, int dec, int x, int y, int r, boolean isRight) {
     String s = "";
     if (v != null) {
-      String balance = getAVL(v.toString());
-
+      s += drawVertex(x, y, r, "black", getColor(v.toString()),
+              FONT_SIZE, getColor(v.toString()).equals("White") ? "Black" : "White",
+              v.get().toString(), getAVL(v.toString()) + (isRight ? " R" : " L"));
+      if (v.hayIzquierdo() && v.hayDerecho())
+        s += drawVertexs(v.izquierdo(), dec / 2, x - dec, y + 2 * r, r, false) +
+                drawVertexs(v.derecho(), dec / 2, x + dec, y + 2 * r, r, true);
+      if (v.hayIzquierdo() && !v.hayDerecho())
+        s += drawVertexs(v.izquierdo(), dec / 2, x - dec, y + 2 * r, r, false);
+      if (!v.hayIzquierdo() && v.hayDerecho())
+        s += drawVertexs(v.derecho(), dec / 2, x + dec, y + 2 * r, r, true);
     }
+    return s;
   }
 
-  private String drawVertex(int x, int y, int rad, String text, String color, boolean isAvl, String balance) {
-
+  private String drawLines(VerticeArbolBinario v, int dec, int x, int y) {
+    String s = "";
+    if (v.hayIzquierdo() && v.hayDerecho())
+      s += drawLine(x, y, x - dec, y + 2 * RADIUS, "Black") +
+              drawLine(x, y, x + dec, y + 2 * RADIUS, "Black") +
+              drawLines(v.izquierdo(), dec / 2, x - dec, y + 2 * RADIUS) +
+              drawLines(v.derecho(), dec / 2, x +  dec, y + 2 * RADIUS);
+    if (v.hayIzquierdo() && !v.hayDerecho())
+      s += drawLine(x, y, x - dec, y + 2 * RADIUS, "Black") +
+              drawLines(v.izquierdo(), dec / 2, x - dec, y + 2 * RADIUS);
+    if (!v.hayIzquierdo() && v.hayDerecho())
+      s += drawLine(x, y, x + dec, y + 2 * RADIUS, "Black") +
+              drawLines(v.derecho(), dec / 2, x +  dec, y + 2 * RADIUS);
+    return s;
   }
 
   private String getAVL(String s) {
     String balance = null;
     if (structure == Structure.TAVL) balance = s.split(" ")[1];
     return balance;
+  }
+
+  private String getColor(String s) {
+    String color = "White";
+    if (structure == Structure.TRN) color = s.charAt(0) == 'N' ? "Black" : "Red";
+    return color;
   }
 
   public String graphGraph() {
@@ -188,8 +215,14 @@ public class GrapherStructure extends GrapherSVG {
     return arr[pos];
   }
 
-  private int breadth(VerticeArbolBinario<Integer> v, int n) {
-    if (!v.hayDerecho()) return n;
-    return breadth(v.derecho(), n + 1);
+  private int breadth(VerticeArbolBinario<Integer> v) {
+    int n = 1;
+    if (v.hayDerecho()) {
+      n += breadth(v.derecho());
+    }
+    if (v.hayIzquierdo()) {
+      n += breadth(v.izquierdo());
+    }
+    return n;
   }
 }
