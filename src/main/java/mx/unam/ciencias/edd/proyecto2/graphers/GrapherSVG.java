@@ -59,6 +59,7 @@ public class GrapherSVG {
   public String drawArrows(int x, int y) {
     return String.format("\t\t<use xlink:href='#arrows' x='%d' y='%d'/>" + "\n", x, y);
   }
+
   public String declareArrows() {
     return "\t\t<symbol id='arrows' width='40' height='50' viewBox='0 0'>" + "\n" +
       "\t" + drawTriangle(0, 25, 7, 15, "black") +

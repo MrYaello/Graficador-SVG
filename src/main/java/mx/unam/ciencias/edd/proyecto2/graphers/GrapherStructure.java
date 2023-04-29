@@ -209,13 +209,10 @@ public class GrapherStructure extends GrapherSVG {
 
       e = e.replace("_", "");
       for (String c : coords) {
-        System.out.println(c);
-        System.out.println(e.split(", ")[0].equals(c.split(" ")[0]));
         if (e.split(", ")[0].equals(c.split(" ")[0])) {
           x1 = Double.parseDouble(c.split(" ")[1].split(",")[0]);
           y1 = Double.parseDouble(c.split(" ")[1].split(",")[1]);
         }
-        System.out.println(e.split(", ")[1].equals(c.split(" ")[0]));
         if (e.split(", ")[1].equals(c.split(" ")[0])) {
           x2 = Double.parseDouble(c.split(" ")[1].split(",")[0]);
           y2 = Double.parseDouble(c.split(" ")[1].split(",")[1]);
