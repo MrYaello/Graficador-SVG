@@ -132,7 +132,7 @@ public class GrapherStructure extends GrapherSVG {
     }
     int depth = build4.altura() == 0 ? 1 : build4.altura();
     RADIUS = calcElementWidth(max(toStringArr(build4.iterator(), build4.getElementos()))) / 2;
-    HEIGHT = 2 * MARGIN + 2 * (depth + 1) * RADIUS;
+    HEIGHT = 2 * MARGIN + 2 * (depth + 3) * RADIUS;
     WIDTH = 2 * MARGIN + (breadth(build4.raiz()) + 2) * RADIUS * 2;
     s += drawLines(build4.raiz(), (WIDTH / 2) / 2, WIDTH / 2, RADIUS + 10);
     s += drawVertexes(build4.raiz(), (WIDTH / 2) / 2, WIDTH / 2, RADIUS + 10, RADIUS, true);
@@ -147,12 +147,12 @@ public class GrapherStructure extends GrapherSVG {
               FONT_SIZE, getColor(v.toString()).equals("White") ? "Black" : "White",
               v.get().toString(), getAVL(v.toString()) + (isRight ? " R" : " L"));
       if (v.hayIzquierdo() && v.hayDerecho())
-        s += drawVertexes(v.izquierdo(), dec / 2, x - dec, y + 2 * r, r, false) +
-                drawVertexes(v.derecho(), dec / 2, x + dec, y + 2 * r, r, true);
+        s += drawVertexes(v.izquierdo(), dec / 2, x - dec, y + 2 * r + 10, r, false) +
+                drawVertexes(v.derecho(), dec / 2, x + dec, y + 2 * r + 10, r, true);
       if (v.hayIzquierdo() && !v.hayDerecho())
-        s += drawVertexes(v.izquierdo(), dec / 2, x - dec, y + 2 * r, r, false);
+        s += drawVertexes(v.izquierdo(), dec / 2, x - dec, y + 2 * r + 10, r, false);
       if (!v.hayIzquierdo() && v.hayDerecho())
-        s += drawVertexes(v.derecho(), dec / 2, x + dec, y + 2 * r, r, true);
+        s += drawVertexes(v.derecho(), dec / 2, x + dec, y + 2 * r + 10, r, true);
     }
     return s;
   }
@@ -160,16 +160,16 @@ public class GrapherStructure extends GrapherSVG {
   private String drawLines(VerticeArbolBinario v, int dec, int x, int y) {
     String s = "";
     if (v.hayIzquierdo() && v.hayDerecho())
-      s += drawLine(x, y, x - dec, y + 2 * RADIUS, "Black") +
-              drawLine(x, y, x + dec, y + 2 * RADIUS, "Black") +
-              drawLines(v.izquierdo(), dec / 2, x - dec, y + 2 * RADIUS) +
-              drawLines(v.derecho(), dec / 2, x +  dec, y + 2 * RADIUS);
+      s += drawLine(x, y, x - dec, y + 2 * RADIUS + 10, "Black") +
+              drawLine(x, y, x + dec, y + 2 * RADIUS + 10, "Black") +
+              drawLines(v.izquierdo(), dec / 2, x - dec, y + 2 * RADIUS + 10) +
+              drawLines(v.derecho(), dec / 2, x +  dec, y + 2 * RADIUS + 10);
     if (v.hayIzquierdo() && !v.hayDerecho())
-      s += drawLine(x, y, x - dec, y + 2 * RADIUS, "Black") +
-              drawLines(v.izquierdo(), dec / 2, x - dec, y + 2 * RADIUS);
+      s += drawLine(x, y, x - dec, y + 2 * RADIUS + 10, "Black") +
+              drawLines(v.izquierdo(), dec / 2, x - dec, y + 2 * RADIUS + 10);
     if (!v.hayIzquierdo() && v.hayDerecho())
-      s += drawLine(x, y, x + dec, y + 2 * RADIUS, "Black") +
-              drawLines(v.derecho(), dec / 2, x +  dec, y + 2 * RADIUS);
+      s += drawLine(x, y, x + dec, y + 2 * RADIUS + 10, "Black") +
+              drawLines(v.derecho(), dec / 2, x +  dec, y + 2 * RADIUS + 10);
     return s;
   }
 
